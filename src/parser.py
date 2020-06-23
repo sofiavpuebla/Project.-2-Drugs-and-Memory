@@ -1,5 +1,5 @@
 import argparse
-from src.funciones import existePais, existeIndice, existeAtributo
+from src.getInfo import existePais, existeIndice, existeAtributo
 
 
 def parser():

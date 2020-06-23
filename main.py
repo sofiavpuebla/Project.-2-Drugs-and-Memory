@@ -1,5 +1,6 @@
-import src.funciones as ex
+import src.getInfo as ex
 from src.parser import *
+
 
 def main():
     args=parser()
