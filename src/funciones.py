@@ -4,40 +4,45 @@ from bs4 import BeautifulSoup
 
 data=pd.read_csv("output/atrib_pais.csv")
 
-def existePais(country):"""
-Esta función comprueba si existe el país introducido por el usuario
-"""
+def existePais(country):
+    """
+    Esta función comprueba si existe el país introducido por el usuario
+    """
     if country in set(data["Country"]):
         return country
     else:
         raise ValueError("Este país no se encuentra en la lista")
 
-def existeIndice(indice):"""
-Esta función comprueba si existe el índice introducido
-"""
+def existeIndice(indice):
+    """
+    Esta función comprueba si existe el índice introducido
+    """
     if indice in ["GDP","GEI"]:
         return indice
     else:
         raise ValueError("Introduce un indice válido")
 
-def existeAtributo(attribute):"""
-Esta función comprueba si existe el atributo introducido por el usuario
-"""
+def existeAtributo(attribute):
+    """
+    Esta función comprueba si existe el atributo introducido por el usuario
+    """
     if attribute in ["openness","conscientiousness","extraversion","agreeableness","neuroticism"]:
         return attribute
     else:
         raise ValueError("Introduce un atributo válido")
 
-def filterCountry(country):"""
-Esta función filtra todo el dataset en función del país introducido
-"""
+def filterCountry(country):
+    """
+    Esta función filtra todo el dataset en función del país introducido
+    """
     global country_class
     country_class=data.loc[data["Country"]==country]
     return country_class
 
-def getAttributeIndex(country, attribute):"""
-Esta función devuelve la media sobre 5 del atributo introducido en el país escogido
-"""
+def getAttributeIndex(country, attribute):
+    """
+    Esta función devuelve la media sobre 5 del atributo introducido en el país escogido
+    """
     total=0
     acces_mean=country_class.groupby("Country").describe()
     if attribute=="openness":
@@ -60,12 +65,15 @@ Esta función devuelve la media sobre 5 del atributo introducido en el país esc
         columns=['EST1', 'EST3', 'EST5', 'EST6', 'EST7','EST8','EST9','EST10']
         for column in columns:
             total+=(acces_mean[column]["mean"])
+    else: 
+        return None
     index_attribute=total/len(columns)
     return f"{country}, {attribute}: {index_attribute[country]}"
 
-def obtainDictEmprend():"""
-Esta función obtiene un diccionario mediante web scraping de la url mostrada a continuación
-"""
+def obtainDictEmprend():
+    """
+    Esta función obtiene un diccionario mediante web scraping de la url mostrada a continuación
+    """
     url="https://thegedi.org/global-entrepreneurship-and-development-index/"
     res=requests.get(url)
     soup=BeautifulSoup(res.text, "html.parser")
@@ -86,9 +94,10 @@ Esta función obtiene un diccionario mediante web scraping de la url mostrada a 
 
 nivel_emprendimiento=obtainDictEmprend()
 
-def getIndex(country,index):"""
-Esta función devuelve el GDP ('Gross Domestic Product') o el GEI ('Global Entrepreneurship Index') del país introducido
-"""
+def getIndex(country,index):
+    """
+    Esta función devuelve el GDP ('Gross Domestic Product') o el GEI ('Global Entrepreneurship Index') del país introducido
+    """
     nivel_emprendimiento=obtainDictEmprend()
     for pais in nivel_emprendimiento:
         if pais["Country"]==country:
